@@ -8,6 +8,9 @@
     <div ng:controller="myController">
         <h2>{{title}}</h2>
         <p>{{todo.length}}</p>
+        <ul ng:repeat="stuff in todo">
+            <li> {{stuff.job}}
+        </ul>
     </div>
 </body>
 </html>
