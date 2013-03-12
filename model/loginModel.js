@@ -1,0 +1,2 @@
+uChat.service('loginModel', function() {
+    });

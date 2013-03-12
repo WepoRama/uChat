@@ -3,10 +3,16 @@ window.myController = ($scope) ->
     $scope.todo = [
         {job: "Stuffing"
         done: false
-        },{job: "more"
+        },
+        {job: "more"
         done: true
         },{job: "Learn Angular"
         done: false
         }
     ]
-    1
+    $scope.two = () -> 
+        [{job: "more"
+        done: true
+        },{job: "Learn Angular"
+        done: false
+        }]

@@ -15,7 +15,17 @@
         done: false
       }
     ];
-    return 1;
+    return $scope.two = function() {
+      return [
+        {
+          job: "more",
+          done: true
+        }, {
+          job: "Learn Angular",
+          done: false
+        }
+      ];
+    };
   };
 
 }).call(this);
