@@ -8,6 +8,7 @@ uChat.controller('loginController', function($scope, $location, $routeParams) {
     return $location.path('/chat/');
   };
   $scope.sendMessage = function() {
+    $route.chat.message = '';
     return $location.path('/chat/');
   };
   return 1;

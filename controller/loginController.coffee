@@ -6,6 +6,7 @@ uChat.controller('loginController',
         $scope.createRoom = () ->
             $location.path('/chat/');
         $scope.sendMessage = () ->
+            $route.chat.message = ''
             $location.path('/chat/');
         1
 );
