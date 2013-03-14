@@ -2,14 +2,15 @@
 
 uChat.controller('loginController', function($scope, $location, $routeParams) {
   $scope.chooseHandle = function() {
-    connection.requesthandle($scope.login.handle);
+    connection.requestHandle($scope.login.handle);
     return $location.path('/chatsAvailable/');
   };
   $scope.createRoom = function() {
+    connection.requestRoom($scope.login.roomName);
     return $location.path('/chat/');
   };
   $scope.sendMessage = function() {
-    $route.chat.message = '';
+    connection.sendMessage($scope.chat.message);
     return $location.path('/chat/');
   };
   return 1;

@@ -17,6 +17,14 @@ connection.requestHandle = function(handle) {
   return connection.send(handle);
 };
 
+connection.requestRoom = function(roomName) {
+  return connection.send(roomName);
+};
+
+connection.sendMessage = function(message) {
+  return connection.send(roomName);
+};
+
 connection.onmessage = function(message) {
   var e, json;
   try {

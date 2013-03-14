@@ -10,6 +10,10 @@ connection.onerror = (error) ->
 
 connection.requestHandle = (handle) ->
     connection.send(handle)
+connection.requestRoom = (roomName) ->
+    connection.send(roomName)
+connection.sendMessage = (message) ->
+    connection.send(roomName)
 
 connection.onmessage = (message) ->
     try 
