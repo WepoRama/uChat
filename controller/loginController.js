@@ -13,7 +13,7 @@ uChat.controller('loginController', function($scope, $location, $routeParams) {
       return $scope.history.push(l);
     });
     connection.requestHandle($scope.login.handle);
-    return $location.path('/chatsAvailable/');
+    return $location.path('/chat/');
   };
   $scope.createRoom = function() {
     connection.requestRoom($scope.login.roomName);

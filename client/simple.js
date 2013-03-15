@@ -51,15 +51,7 @@ connection.onmessage = function(message) {
   }
 };
 
-setHistory = function(history) {
-  var line, _i, _len, _results;
-  _results = [];
-  for (_i = 0, _len = history.length; _i < _len; _i++) {
-    line = history[_i];
-    _results.push(console.log(line));
-  }
-  return _results;
-};
+setHistory = function(history) {};
 
 addLine = function(line) {
   console.log(line);

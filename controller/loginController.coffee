@@ -7,7 +7,8 @@ uChat.controller 'loginController',
             connection.setAddHistoryLine  (l) ->
                 $scope.history.push l
             connection.requestHandle($scope.login.handle)
-            $location.path('/chatsAvailable/');
+            #$location.path('/chatsAvailable/');
+            $location.path('/chat/');
         $scope.createRoom = () ->
             connection.requestRoom($scope.login.roomName)
             $location.path('/chat/');
