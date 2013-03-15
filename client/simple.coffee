@@ -1,9 +1,13 @@
 window.WebSocket = window.WebSocket 
 
-localStorage.history = ''
-
+###
+localHistory = [{author:'system', text:'Welcome to chat'}]
+mylines = localHistory 
 addEventListener('message', (e) -> connection.send(e))
+###
 
+connectin.setAddHistoryLine = (f) ->
+    connection.addHistory = f
 connection = new WebSocket('ws://127.0.0.1:1337')
 
 connection.onopen = () ->
@@ -30,12 +34,12 @@ setHistory = (history) ->
     console.log line for line in history
 addLine = (line) ->    
     console.log line
-    localStorage.history = localStorage.history or ''
-
-    localStorage.history = localStorage.history + '</p>'+ line.text
+    #lines = localStorage.history
+    #lines = [] if lines is undefined
+    #localHistory.push line
+    connection.addHistory line 
 acceptNick = (nick) ->    
     console.log 'accept ', nick
     sessionStorage.nickName = nick
 refuseNick = (nick) ->    
     console.log 'refuse ', nick
-    sessionStorage.nickName = ''
