@@ -1,5 +1,5 @@
 <form name='login'>
     <label for='loginContent'>Choose handle to use:</label>
     <input id='loginContent' ng-model='login.handle'></input>
-    <button ng-click='chooseHandle()' >Choose handle</button>
+    <button ng-click='chooseHandle()' ngdisabled='!login.handle'>Choose handle</button>
 </form>

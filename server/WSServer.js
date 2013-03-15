@@ -49,6 +49,12 @@ wsServer = new webSocketServer({
 wsServer.on('request', function(request) {
   var connection, index, userName;
   console.log((new Date()) + ' Connection from origin ' + request.origin + '.');
+  /*
+  # accept connection - you should check 'request.origin' to make sure that
+  # client is connecting from your website
+  # (http://en.wikipedia.org/wiki/Same_origin_policy)
+  */
+
   connection = request.accept(null, request.origin);
   index = clients.push(connection) - 1;
   userName = false;
@@ -63,7 +69,7 @@ wsServer.on('request', function(request) {
   }
   connection.on('message', function(message) {
     var client, json, obj, _i, _len, _results;
-    if (message.type === !'utf8') {
+    if (message.type !== 'utf8') {
       return;
     }
     if (userName === false) {
@@ -72,27 +78,27 @@ wsServer.on('request', function(request) {
         type: 'acceptNickname',
         data: userName
       }));
-      return console.log((new Date()) + ' User is known as: ' + userName);
-    } else {
-      console.log((new Date()) + ' Received Message from ', +userName + ': ' + message.utf8Data);
-      obj = {
-        time: (new Date()).getTime(),
-        text: htmlEntities(message.utf8Data),
-        author: userName
-      };
-      history.push(obj);
-      history = history.slice(-100);
-      json = JSON.stringify({
-        type: 'message',
-        data: obj
-      });
-      _results = [];
-      for (_i = 0, _len = clients.length; _i < _len; _i++) {
-        client = clients[_i];
-        _results.push(client.sendUTF(json));
-      }
-      return _results;
+      console.log((new Date()) + ' User is known as: ' + userName);
+      return;
     }
+    console.log((new Date()) + ' Received Message from ' + userName + ': ' + message.utf8Data);
+    obj = {
+      time: (new Date()).getTime(),
+      text: htmlEntities(message.utf8Data),
+      author: userName
+    };
+    history.push(obj);
+    history = history.slice(-100);
+    json = JSON.stringify({
+      type: 'message',
+      data: obj
+    });
+    _results = [];
+    for (_i = 0, _len = clients.length; _i < _len; _i++) {
+      client = clients[_i];
+      _results.push(client.sendUTF(json));
+    }
+    return _results;
   });
   return connection.on('close', function(connection) {
     if (userName === false) {

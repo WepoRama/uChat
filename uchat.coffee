@@ -16,4 +16,5 @@ uChatConfig = ($routeProvider) ->
         
 uChat = angular.module('uChat', []).
     config( uChatConfig );
+
 1

@@ -13,22 +13,24 @@ connection.requestHandle = (handle) ->
 connection.requestRoom = (roomName) ->
     connection.send(roomName)
 connection.sendMessage = (message) ->
-    connection.send(roomName)
+    connection.send(message)
 
 connection.onmessage = (message) ->
     try 
         json = JSON.parse(message.data);
     catch e
         console.log('This doesn\'t look like a valid JSON: ', message.data);
-    setHistory json.history if json.type == 'history'
-    addLine json.line if json.type == 'message'
-    acceptNick json.nick if json.type == 'acceptNickname'
-    refuseNick json.nick if json.type == 'refuseNickname'
+    setHistory json.data if json.type == 'history'
+    addLine    json.data if json.type == 'message'
+    acceptNick json.data if json.type == 'acceptNickname'
+    refuseNick json.data if json.type == 'refuseNickname'
 setHistory = (history) ->    
     console.log line for line in history
 addLine = (line) ->    
     console.log line
 acceptNick = (nick) ->    
     console.log 'accept ', nick
+    sessionStorage.nickName = nick
 refuseNick = (nick) ->    
     console.log 'refuse ', nick
+    sessionStorage.nickName = ''

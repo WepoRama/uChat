@@ -22,7 +22,7 @@ connection.requestRoom = function(roomName) {
 };
 
 connection.sendMessage = function(message) {
-  return connection.send(roomName);
+  return connection.send(message);
 };
 
 connection.onmessage = function(message) {
@@ -34,16 +34,16 @@ connection.onmessage = function(message) {
     console.log('This doesn\'t look like a valid JSON: ', message.data);
   }
   if (json.type === 'history') {
-    setHistory(json.history);
+    setHistory(json.data);
   }
   if (json.type === 'message') {
-    addLine(json.line);
+    addLine(json.data);
   }
   if (json.type === 'acceptNickname') {
-    acceptNick(json.nick);
+    acceptNick(json.data);
   }
   if (json.type === 'refuseNickname') {
-    return refuseNick(json.nick);
+    return refuseNick(json.data);
   }
 };
 
@@ -62,9 +62,11 @@ addLine = function(line) {
 };
 
 acceptNick = function(nick) {
-  return console.log('accept ', nick);
+  console.log('accept ', nick);
+  return sessionStorage.nickName = nick;
 };
 
 refuseNick = function(nick) {
-  return console.log('refuse ', nick);
+  console.log('refuse ', nick);
+  return sessionStorage.nickName = '';
 };

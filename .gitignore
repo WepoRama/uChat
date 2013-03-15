@@ -4,3 +4,6 @@ Guidebook/
 j
 tmp
 test*.html
+*.swo
+node_modules
+nodesWebSocketChatClient

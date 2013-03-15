@@ -1,6 +1,7 @@
 
 uChat.controller('loginController',
     ($scope, $location, $routeParams) -> 
+        $scope.approvedNick = '#nonickapproved#'
         $scope.chooseHandle = () ->
             connection.requestHandle($scope.login.handle)
             $location.path('/chatsAvailable/');
