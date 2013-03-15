@@ -2,7 +2,7 @@
 "use strict";
  
 # Port where we'll run the websocket server
-webSocketsServerPort = 1337;
+webSocketsServerPort = 8088;
  
 # websocket and http servers:
 webSocketServer = require('websocket').server;

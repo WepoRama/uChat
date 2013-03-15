@@ -1,4 +1,4 @@
-window.WebSocket = window.WebSocket 
+#window.WebSocket = window.WebSocket 
 
 ###
 localHistory = [{author:'system', text:'Welcome to chat'}]
@@ -6,9 +6,10 @@ mylines = localHistory
 addEventListener('message', (e) -> connection.send(e))
 ###
 
-connectin.setAddHistoryLine = (f) ->
+connection = new WebSocket('ws://127.0.0.1:8088')
+
+connection.setAddHistoryLine = (f) ->
     connection.addHistory = f
-connection = new WebSocket('ws://127.0.0.1:1337')
 
 connection.onopen = () ->
 
@@ -31,7 +32,7 @@ connection.onmessage = (message) ->
     acceptNick json.data if json.type == 'acceptNickname'
     refuseNick json.data if json.type == 'refuseNickname'
 setHistory = (history) ->    
-    console.log line for line in history
+    #console.log line for line in history
 addLine = (line) ->    
     console.log line
     #lines = localStorage.history

@@ -9,7 +9,7 @@ uChatConfig = ($routeProvider) ->
             templateUrl: 'view/chatsAvailable.html'
         })
         .when('/chat/', {
-            controller: 'loginController',
+            controller: 'chatController',
             templateUrl: 'view/chat.html'
         })
     1

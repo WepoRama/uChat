@@ -1,7 +1,7 @@
 
 uChat.controller 'chatController',
     ($scope, $location, $routeParams) -> 
-        $scope.history = localStorage.history or [{author:'system', text:'---'}]
+        $scope.history = [{author:'system', text:'Welcome'}]
         connection.setAddHistoryLine (l) ->
             $scope.history.push l
         $scope.sendMessage = () ->

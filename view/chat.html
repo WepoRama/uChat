@@ -2,7 +2,9 @@
     <li> Nono no messages
 </ul>
 <form name='newMessage'>
-    <p>{{history}}</p>
+    <div ng-repeat='line in history'>
+        <p> {{line.author}}: {{line.text}}</p>
+    </div>
     <label for='loginContent'>New message</label>
     <input id='loginContent' ng-model='chat.message'></input>
     <button ng-click='sendMessage()' >Send Message</button>
