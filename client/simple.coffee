@@ -1,5 +1,7 @@
 window.WebSocket = window.WebSocket 
 
+localStorage.history = ''
+
 addEventListener('message', (e) -> connection.send(e))
 
 connection = new WebSocket('ws://127.0.0.1:1337')
@@ -28,6 +30,9 @@ setHistory = (history) ->
     console.log line for line in history
 addLine = (line) ->    
     console.log line
+    localStorage.history = localStorage.history or ''
+
+    localStorage.history = localStorage.history + line.text
 acceptNick = (nick) ->    
     console.log 'accept ', nick
     sessionStorage.nickName = nick

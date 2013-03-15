@@ -3,6 +3,8 @@ var acceptNick, addLine, connection, refuseNick, setHistory;
 
 window.WebSocket = window.WebSocket;
 
+localStorage.history = '';
+
 addEventListener('message', function(e) {
   return connection.send(e);
 });
@@ -58,7 +60,9 @@ setHistory = function(history) {
 };
 
 addLine = function(line) {
-  return console.log(line);
+  console.log(line);
+  localStorage.history = localStorage.history || '';
+  return localStorage.history = localStorage.history + line.text;
 };
 
 acceptNick = function(nick) {

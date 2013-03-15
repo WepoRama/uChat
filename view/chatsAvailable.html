@@ -4,6 +4,7 @@
 <form name='newChat'>
     <label for='loginContent'>New chat room</label>
     <p id='yourHandle' >{{approvedNick}}</p>
+    <p id='yourRoom' >{{login.roomName}}</p>
     <input id='loginContent' ng-model='login.roomName'></input>
     <button ng-click='createRoom()'  ngdisabled='!login.roomName'>Create Room</button>
 </form>

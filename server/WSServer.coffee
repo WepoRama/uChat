@@ -63,7 +63,7 @@ wsServer.on 'request', (request) ->
     # eventually send room names here, rather than history
     # send back chat history
     if history.length > 0
-        connection.sendUTF(JSON.stringify( { type: 'history', data: history} )) if (history.length > 0) 
+        connection.sendUTF(JSON.stringify( { type: 'history', data: history} ))
  
     # message from user 
     connection.on 'message', (message) ->
