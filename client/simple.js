@@ -62,7 +62,7 @@ setHistory = function(history) {
 addLine = function(line) {
   console.log(line);
   localStorage.history = localStorage.history || '';
-  return localStorage.history = localStorage.history + line.text;
+  return localStorage.history = localStorage.history + '</p>' + line.text;
 };
 
 acceptNick = function(nick) {

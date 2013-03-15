@@ -32,7 +32,7 @@ addLine = (line) ->
     console.log line
     localStorage.history = localStorage.history or ''
 
-    localStorage.history = localStorage.history + line.text
+    localStorage.history = localStorage.history + '</p>'+ line.text
 acceptNick = (nick) ->    
     console.log 'accept ', nick
     sessionStorage.nickName = nick
