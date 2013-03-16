@@ -1,9 +1,10 @@
 <h2>the Chat</h2>
-    <ul>
-        <li ng-repeat='line in history'> {{line.author}}: {{line.text}}
-    </ul>
 <form name='newMessage'>
     <label for='loginContent'>New message</label>
     <input id='loginContent' ng-model='chat.message'></input>
+    <input id='loginContent' ng-model='login.handle'></input>
     <button ng-click='sendMessage()' >Send Message</button>
 </form>
+<ul>
+    <li ng-repeat='line in history'> {{line.author}}: {{line.text}}
+</ul>
