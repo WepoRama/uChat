@@ -5,11 +5,14 @@ uChat.service 'chatModel', () ->
     this.getNickName = () ->
         window.localStorage.getItem 'nick'
     this.getHistory = () ->
-        history = JSON.parse ( window.localStorage.getItem 'history' )
+        saved =  window.localStorage.getItem 'history' or JSON.stringify([])
+        saved =  JSON.stringify([]) if saved.length == 0
+        history = JSON.parse saved
         return history if history
         []
     this.addLine = (line) ->
         history = this.getHistory()
-        history.push line
-        window.localStorage.setItem 'history', JSON.stringify(chapter)
+        history.unshift line
+        window.localStorage.setItem 'history', JSON.stringify(history)
+        history
 

@@ -8,8 +8,12 @@ uChat.service('chatModel', function() {
     return window.localStorage.getItem('nick');
   };
   this.getHistory = function() {
-    var history;
-    history = JSON.parse(window.localStorage.getItem('history'));
+    var history, saved;
+    saved = window.localStorage.getItem('history' || JSON.stringify([]));
+    if (saved.length === 0) {
+      saved = JSON.stringify([]);
+    }
+    history = JSON.parse(saved);
     if (history) {
       return history;
     }
@@ -18,7 +22,8 @@ uChat.service('chatModel', function() {
   return this.addLine = function(line) {
     var history;
     history = this.getHistory();
-    history.push(line);
-    return window.localStorage.setItem('history', JSON.stringify(chapter));
+    history.unshift(line);
+    window.localStorage.setItem('history', JSON.stringify(history));
+    return history;
   };
 });
