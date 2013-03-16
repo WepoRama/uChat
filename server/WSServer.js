@@ -59,12 +59,6 @@ wsServer.on('request', function(request) {
   index = clients.push(connection) - 1;
   userName = false;
   console.log((new Date()) + ' Connection accepted.');
-  if (history.length > 0) {
-    connection.sendUTF(JSON.stringify({
-      type: 'history',
-      data: history
-    }));
-  }
   connection.on('message', function(message) {
     var client, json, obj, _i, _len, _results;
     if (message.type !== 'utf8') {

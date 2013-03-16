@@ -60,7 +60,7 @@ addLine = function(line) {
 
 acceptNick = function(nick) {
   console.log('accept ', nick);
-  return sessionStorage.nickName = nick;
+  return window.localStorage.setItem('nick', nick);
 };
 
 refuseNick = function(nick) {

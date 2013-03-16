@@ -41,6 +41,7 @@ addLine = (line) ->
     connection.addHistory line 
 acceptNick = (nick) ->    
     console.log 'accept ', nick
-    sessionStorage.nickName = nick
+    #sessionStorage.nickName = nick
+    window.localStorage.setItem 'nick', nick
 refuseNick = (nick) ->    
     console.log 'refuse ', nick

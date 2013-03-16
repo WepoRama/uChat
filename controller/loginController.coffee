@@ -1,11 +1,8 @@
 
 uChat.controller 'loginController',
-    ($scope, $location, $routeParams) -> 
-        $scope.history = [{author:'system', text:'Welcome'}]
-        $scope.approvedNick = localStorage.approvedNick or '#nna#'
+    ($scope, $location, $routeParams,chatModel) -> 
         $scope.chooseHandle = () ->
-            connection.setAddHistoryLine  (l) ->
-                $scope.history.push l
+            #connection.setAddHistoryLine (l) -> chatModel.addLine l
             connection.requestHandle($scope.login.handle)
             #$location.path('/chatsAvailable/');
             $location.path('/chat/');
