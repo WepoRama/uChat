@@ -4,7 +4,7 @@ uChat.controller 'chatController',
         $scope.nick = chatModel.getNickName()
         $scope.history = chatModel.getHistory()
         connection.setAddHistoryLine (l) ->
-            $scope.history = chatModel.addLine l
+            $scope.$apply () -> $scope.history = chatModel.addLine l
         $scope.sendMessage = () ->
             connection.sendMessage($scope.chat.message)
             $location.path('/chat/');

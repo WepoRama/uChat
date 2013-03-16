@@ -4,7 +4,9 @@ uChat.controller('chatController', function($scope, $location, $routeParams, cha
   $scope.nick = chatModel.getNickName();
   $scope.history = chatModel.getHistory();
   connection.setAddHistoryLine(function(l) {
-    return $scope.history = chatModel.addLine(l);
+    return $scope.$apply(function() {
+      return $scope.history = chatModel.addLine(l);
+    });
   });
   return $scope.sendMessage = function() {
     connection.sendMessage($scope.chat.message);

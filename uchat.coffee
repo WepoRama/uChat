@@ -1,3 +1,5 @@
+window.localStorage.setItem 'history', JSON.stringify([])
+
 uChatConfig = ($routeProvider) ->
     $routeProvider
         .when('/login/', {

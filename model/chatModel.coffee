@@ -1,7 +1,5 @@
 
 uChat.service 'chatModel', () ->
-    connection.setAddHistoryLine (l)->
-        this.addLine(l)
     this.getNickName = () ->
         window.localStorage.getItem 'nick'
     this.getHistory = () ->
