@@ -3,8 +3,7 @@
     <p>You nick is: {{nick}}</p>
     <label for='loginContent'>New message</label>
     <input id='loginContent' ng-model='chat.message'></input>
-    <!--input id='loginContent' ng-model='nick'></input-->
-    <button ng-click='sendMessage()' >Send Message</button>
+    <button ng-click='sendMessage()'>Send Message</button>
 </form>
 <div>
     <p ng-repeat='line in history'> {{line.author}}: {{line.text}}</p>
