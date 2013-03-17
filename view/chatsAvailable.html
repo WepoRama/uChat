@@ -2,6 +2,7 @@
     <li ng-repeat='room in rooms'> <a href='#/chat/{{room}}'>{{room}}</a>
 </ul>
 <form name='newChat'>
+    <p>You nick is: {{nick}}</p>
     <label for='loginContent'>New chat room</label>
     <!-- p id='yourHandle' >{{nick}}</p -->
     <input id='loginContent' ng-model='login.roomName'></input>
