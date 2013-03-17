@@ -35,6 +35,10 @@ connection.requestRoom = (roomName) ->
     sendJSON 'room', roomName
 connection.sendMessage = (message) ->
     sendJSON 'message', message
+connection.kick = (user,room) ->
+    sendJSON 'kick', 
+        user: user
+        room: room
 
 connection.onmessage = (message) ->
     try 
@@ -47,6 +51,13 @@ connection.onmessage = (message) ->
     refuseNick json.data if json.type == 'refuseNickname'
     roomList   json.data if json.type == 'roomList'
     viewers    json.data if json.type == 'viewers'
+    urKicked   json.data if json.type == 'kick'
+urKicked = (data) ->
+    addLine 
+        time: (new Date()).getTime(),
+        text: "You have been kicked from " + data.room
+        author: userName
+        room: data.room
     
 viewers = (data) ->    
     connection.setUsers data

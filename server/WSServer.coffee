@@ -51,9 +51,10 @@ joinRoom  = (userName, room, index) ->
     return unless clnt
     clnt.room = room
     clnt.userName = userName
+    broadcastRoomAudience room
+broadcastRoomAudience = (room) ->
     clientell = []
     for client in clients
-        console.log userName + ' in  ' + room + ' and ' + client.room
         clientell.push client.userName if client.room == room
     json = JSON.stringify 
         type:'viewers'
@@ -71,6 +72,21 @@ doUserName = (connection, message) ->
     connection.sendUTF(JSON.stringify({ type:'acceptNickname', data: userName }));
     console.log((new Date()) + ' User is known as: ' + userName);
     return userName
+kick = (userName, data) ->
+    room = for r in rooms
+        do (r) ->
+            return r if r.name == data.room
+    return if room.user != userName
+    for client in clients
+        do (client) ->
+            if client.room == data.room
+                client.room = ''
+                client.connection.sendUTF JSON.stringify
+                    owner: userName
+                    type: 'kick'
+                    room: data.room
+    broadcastRoomAudience room
+            
 
 broadcastInfo = (json, inRoom) ->
     for client in clients
@@ -135,6 +151,9 @@ wsServer.on 'request', (request) ->
 
         if message.type == 'listRooms'
             listRooms connection
+            return
+        if message.type == 'kick'
+            kick userName, message.data
             return
         if message.type == 'join'
             inRoom = joinRoom userName, message.data, index

@@ -1,3 +1,4 @@
+<div class='boxed'>
 <ul>
     <li ng-repeat='room in rooms'> <a href='#/chat/{{room.name}}'>{{room.name}}</a>
         owner: {{room.owner}}
@@ -8,3 +9,4 @@
     <input id='loginContent' ng-model='login.roomName'></input>
     <button ng-click='createRoom()'  ngdisabled='!login.roomName'>Create Room</button>
 </form>
+</div>

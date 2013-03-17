@@ -5,7 +5,7 @@ mylines = localHistory
 addEventListener('message', (e) -> connection.send(e))
 */
 
-var acceptNick, addLine, connection, refuseNick, roomList, sendJSON, setHistory, setNick, viewers;
+var acceptNick, addLine, connection, refuseNick, roomList, sendJSON, setHistory, setNick, urKicked, viewers;
 
 connection = new WebSocket('ws://127.0.0.1:8088');
 
@@ -58,6 +58,13 @@ connection.sendMessage = function(message) {
   return sendJSON('message', message);
 };
 
+connection.kick = function(user, room) {
+  return sendJSON('kick', {
+    user: user,
+    room: room
+  });
+};
+
 connection.onmessage = function(message) {
   var e, json;
   try {
@@ -82,8 +89,20 @@ connection.onmessage = function(message) {
     roomList(json.data);
   }
   if (json.type === 'viewers') {
-    return viewers(json.data);
+    viewers(json.data);
   }
+  if (json.type === 'kick') {
+    return urKicked(json.data);
+  }
+};
+
+urKicked = function(data) {
+  return addLine({
+    time: (new Date()).getTime(),
+    text: "You have been kicked from " + data.room,
+    author: userName,
+    room: data.room
+  });
 };
 
 viewers = function(data) {

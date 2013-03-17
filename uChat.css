@@ -1,0 +1,83 @@
+body
+{
+    font-family: arial,helvetica,sans-serif;
+	margin: 15px 0px 0px 0px;
+    padding: 5px 10px 5px 10px;
+}
+.rightbox
+{
+	margin: 15px;
+	padding-top: 15px;
+	padding-left: 15px;
+    border: 1px solid black;
+    border-radius: 7px;
+    box-shadow: 5px 5px 3px #888888;
+    min-height: 50px;
+    width: 300px;
+    position: absolute;
+    right: 400px;
+    top: 330px;
+}
+.leftbox
+{
+    position: absolute;
+    top: 330px;
+	margin: 15px;
+	padding-top: 15px;
+	padding-left: 15px;
+    border: 1px solid black;
+    border-radius: 7px;
+    box-shadow: 5px 5px 3px #888888;
+    min-height: 50px;
+    width: 600px;
+}
+
+.boxed
+{
+	margin: 15px;
+	padding-top: 15px;
+	padding-left: 15px;
+	padding-bottom: 15px;
+    border: 1px solid black;
+    border-radius: 7px;
+    box-shadow: 5px 5px 3px #888888;
+    min-height: 150px;
+    width: 950px;
+}
+input
+{
+	font:  14px bold;
+	padding-left: 5px;
+	height: 20px;
+	width: 120px;
+	margin-bottom: 1px;
+	border: 1px solid black;
+    border-radius: 4px;
+}
+button
+{
+	color: #ffffff;
+	background-image: url('beans.jpeg');
+	font:  14px bold ;
+	padding-left: 5px;
+	height: 25px;
+	width: 120px;
+	margin-bottom: 1px;
+	border: 1px solid black;
+    border-radius: 7px;
+    box-shadow: 5px 5px 3px #888888;
+}
+
+h1
+{
+	color: #ffffff;
+	background-image: url('beans.jpeg');
+	font-size: 50px;
+	padding-left: 5px;
+	text-shadow: 3px 3px #333333;
+	width: 990px;
+	margin-bottom: 1px;
+	border: 1px solid black;
+    border-radius: 7px;
+    box-shadow: 5px 5px 3px #888888;
+}

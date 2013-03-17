@@ -1,14 +1,15 @@
-<h2>the Chat</h2>
-<form name='newMessage'>
+<div class='boxed'>
     <p>Your nick is: {{nick}}</p>
     <p>You are in: {{room}} </p>
-    <label for='loginContent'>New message</label>
-    <input id='loginContent' ng-model='chat.message'></input>
-    <button ng-click='sendMessage()'>Send Message</button>
-</form>
-<div>
-    Users in chat:
-    <p ng-repeat='user in users'><a href='#/chat/{{userAction}}/{{room}}/{{user}}'>{{user}}</a></p>
-    Chat:
+    <form name='newMessage'>
+        <label for='loginContent'>New message</label>
+        <input id='loginContent' ng-model='chat.message'></input>
+        <button ng-click='sendMessage()'>Send Message</button>
+    </form>
+</div>
+<div class='leftbox'>
     <p ng-repeat='line in history'> {{line.author}}: {{line.text}}</p>
+</div>
+<div class='rightbox'>
+    <p class='flow' ng-repeat='user in users'><a  href='#/chat/{{userAction}}/{{room}}/{{user}}'>{{user}}</a><p>
 </div>

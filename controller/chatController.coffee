@@ -19,4 +19,5 @@ uChat.controller 'kickController',
     ($scope, $location, $routeParams, chatModel) -> 
         room = $routeParams.room
         nick = $routeParams.nick
+        connection.kick nick,room
         $location.path('/chat/'+room);
