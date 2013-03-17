@@ -44,7 +44,7 @@ listRooms = function(connection) {
 
 joinRoom = function(userName, room, index) {
   var clnt;
-  console.log(userName + ' should join ' + room);
+  console.log(userName || 'listener' + ' should join ' + room);
   clnt = clients[index];
   clnt.inRoom = room;
   return room;
@@ -126,7 +126,7 @@ wsServer.on('request', function(request) {
       listRooms(connection);
       return;
     }
-    if (userName && message.type === 'join') {
+    if (message.type === 'join') {
       inRoom = joinRoom(userName, message.data, index);
       return;
     }
@@ -149,6 +149,7 @@ wsServer.on('request', function(request) {
     };
     if (!userName) {
       obj.text = "Please choose a valid nick to be able to chat";
+      obj.author = '(system says)';
       connection.sendUTF(JSON.stringify({
         type: 'message',
         data: obj
@@ -161,6 +162,7 @@ wsServer.on('request', function(request) {
     });
     _fn = function(client, inRoom) {
       console.log((new Date()) + " Im in room '" + inRoom + "' client is in: " + client.inRoom);
+      console.log("Sending" + obj.text);
       if (client.inRoom === inRoom) {
         return client.connection.sendUTF(json);
       }

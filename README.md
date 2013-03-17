@@ -13,4 +13,3 @@ TODO:
  * .css
  * show users
  * kicking users in room
- * nonicks can not listen in on rooms

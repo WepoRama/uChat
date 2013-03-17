@@ -39,7 +39,7 @@ createRoom = (connection, name) ->
 listRooms = (connection) ->
     connection.sendUTF(JSON.stringify({ type:'roomList', data: rooms }));
 joinRoom  = (userName, room, index) ->
-    console.log userName + ' should join ' + room
+    console.log userName or 'listener' + ' should join ' + room
     clnt = clients[index]
     clnt.inRoom = room
     return room
@@ -108,10 +108,11 @@ wsServer.on 'request', (request) ->
         catch e
             console.log('This doesn\'t look like a valid JSON: ',messageObj.utf8Data );
         console.log((new Date()) + ' Received Message type: ' + message.type + ' data: ' + message.data);
+
         if message.type == 'listRooms'
             listRooms connection
             return
-        if userName and message.type == 'join'
+        if message.type == 'join'
             inRoom = joinRoom userName, message.data, index
             return
         if message.type == 'room'
@@ -135,7 +136,7 @@ wsServer.on 'request', (request) ->
 
         if not userName
             obj.text = "Please choose a valid nick to be able to chat"
-            obj.userName = '(system says)'
+            obj.author = '(system says)'
             connection.sendUTF JSON.stringify({ type:'message', data: obj });
             return
 
@@ -143,11 +144,12 @@ wsServer.on 'request', (request) ->
         # history.push(obj);
         # history = history.slice(-100);
 
-        # broadcast message to all connected clients (choose correct room in time)
+        # broadcast message to all connected clients, choose correct room
         json = JSON.stringify({ type:'message', data: obj });
         for client in clients
             do (client,inRoom) ->
                 console.log (new Date()) + " Im in room '" + inRoom + "' client is in: " + client.inRoom
+                console.log ("Sending" + obj.text)
                 client.connection.sendUTF json if client.inRoom == inRoom
         return
     # user disconnected
