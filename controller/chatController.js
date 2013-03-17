@@ -10,6 +10,7 @@ uChat.controller('chatController', function($scope, $location, $routeParams, cha
   });
   return $scope.sendMessage = function() {
     connection.sendMessage($scope.chat.message);
+    $scope.chat.message = '';
     return $location.path('/chat/');
   };
 });

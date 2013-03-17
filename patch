@@ -1,0 +1,26 @@
+diff --git a/client/simple.coffee b/client/simple.coffee
+index 2c853a8..55a611a 100644
+--- a/client/simple.coffee
++++ b/client/simple.coffee
+@@ -16,17 +16,13 @@ connection.setChooseNick = (f) ->
+ connection.onopen = () ->
+ 
+ connection.onerror = (error) ->
+-sendJSON = (typeOf, data) ->
+-    obj =
+-        type: typeOf
+-        data: handle
+-    connection.sendUTF JSON.stringify obj
++
+ connection.requestHandle = (handle) ->
+-    sendJSON 'handle', handle
++    connection.send(handle)
+ connection.requestRoom = (roomName) ->
+-    sendJSON 'room', roomName
++    connection.send(roomName)
+ connection.sendMessage = (message) ->
+-    sendJSON 'message', message
++    connection.send(message)
+ 
+ connection.onmessage = (message) ->
+     try 
