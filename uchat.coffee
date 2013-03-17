@@ -2,6 +2,10 @@ window.localStorage.setItem 'history', JSON.stringify([])
 
 uChatConfig = ($routeProvider) ->
     $routeProvider
+        .when('', {
+            controller: 'loginController',
+            templateUrl: 'view/login.html'
+        })
         .when('/login/', {
             controller: 'loginController',
             templateUrl: 'view/login.html'

@@ -4,7 +4,10 @@ var uChat, uChatConfig;
 window.localStorage.setItem('history', JSON.stringify([]));
 
 uChatConfig = function($routeProvider) {
-  $routeProvider.when('/login/', {
+  $routeProvider.when('', {
+    controller: 'loginController',
+    templateUrl: 'view/login.html'
+  }).when('/login/', {
     controller: 'loginController',
     templateUrl: 'view/login.html'
   }).when('/chatsAvailable/', {
