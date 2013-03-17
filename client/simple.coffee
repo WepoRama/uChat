@@ -12,6 +12,8 @@ connection.setAddHistoryLine = (f) ->
     connection.addHistory = f
 connection.setChooseNick = (f) ->
     connection.chooseNick = f
+connection.setGetRooms = (f) ->
+    connection.getRooms = f
 
 connection.onopen = () ->
 
@@ -23,6 +25,10 @@ sendJSON = (type, data) ->
     connection.send JSON.stringify obj
 connection.requestHandle = (handle) ->
     sendJSON 'handle', handle
+connection.requestRoomList = (roomName) ->
+    sendJSON 'listRooms', ''
+connection.joinRoom = (roomName) ->
+    sendJSON 'join', roomName
 connection.requestRoom = (roomName) ->
     sendJSON 'room', roomName
 connection.sendMessage = (message) ->
@@ -37,6 +43,8 @@ connection.onmessage = (message) ->
     addLine    json.data if json.type == 'message'
     acceptNick json.data if json.type == 'acceptNickname'
     refuseNick json.data if json.type == 'refuseNickname'
+    roomList   json.data if json.type == 'roomList'
+    
 setHistory = (history) ->    
     #console.log line for line in history
 addLine = (line) ->    
@@ -56,3 +64,6 @@ refuseNick = (nick) ->
     console.log 'refuse ', nick
     nonick = '('+nick+')'
     setNick nonick
+roomList  = (list) ->
+    console.log 'Rooms: ', list
+    connection.getRooms list

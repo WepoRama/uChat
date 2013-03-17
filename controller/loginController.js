@@ -6,14 +6,21 @@ uChat.controller('loginController', function($scope, $location, $routeParams, ch
       return $scope.nick = l;
     });
   });
+  connection.setGetRooms(function(r) {
+    return $scope.$apply(function() {
+      return $scope.rooms = r;
+    });
+  });
   $scope.nick = chatModel.getNickName();
+  connection.requestRoomList();
   $scope.chooseHandle = function() {
     connection.requestHandle($scope.nick);
-    return $location.path('/chat/');
+    return $location.path('/chatsAvailable/');
   };
   $scope.createRoom = function() {
     connection.requestRoom($scope.login.roomName);
-    return $location.path('/chat/');
+    connection.requestRoomList();
+    return $location.path('/chatsAvailable/');
   };
   return 1;
 });

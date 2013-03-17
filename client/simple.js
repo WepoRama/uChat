@@ -5,7 +5,7 @@ mylines = localHistory
 addEventListener('message', (e) -> connection.send(e))
 */
 
-var acceptNick, addLine, connection, refuseNick, sendJSON, setHistory, setNick;
+var acceptNick, addLine, connection, refuseNick, roomList, sendJSON, setHistory, setNick;
 
 connection = new WebSocket('ws://127.0.0.1:8088');
 
@@ -15,6 +15,10 @@ connection.setAddHistoryLine = function(f) {
 
 connection.setChooseNick = function(f) {
   return connection.chooseNick = f;
+};
+
+connection.setGetRooms = function(f) {
+  return connection.getRooms = f;
 };
 
 connection.onopen = function() {};
@@ -32,6 +36,14 @@ sendJSON = function(type, data) {
 
 connection.requestHandle = function(handle) {
   return sendJSON('handle', handle);
+};
+
+connection.requestRoomList = function(roomName) {
+  return sendJSON('listRooms', '');
+};
+
+connection.joinRoom = function(roomName) {
+  return sendJSON('join', roomName);
 };
 
 connection.requestRoom = function(roomName) {
@@ -60,7 +72,10 @@ connection.onmessage = function(message) {
     acceptNick(json.data);
   }
   if (json.type === 'refuseNickname') {
-    return refuseNick(json.data);
+    refuseNick(json.data);
+  }
+  if (json.type === 'roomList') {
+    return roomList(json.data);
   }
 };
 
@@ -86,4 +101,9 @@ refuseNick = function(nick) {
   console.log('refuse ', nick);
   nonick = '(' + nick + ')';
   return setNick(nonick);
+};
+
+roomList = function(list) {
+  console.log('Rooms: ', list);
+  return connection.getRooms(list);
 };

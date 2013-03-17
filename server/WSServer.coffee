@@ -13,13 +13,19 @@ http = require('http');
 ###
 
 # latest 100 messages; rooms to be added later:
-history = [ ];
+# history = [ ];
 
 # list of currently connected clients (users)
 clients = [ ];
 
 userNames = { };
 userNames['nono'] = true
+
+rooms = [
+     'lounge'
+     'entrance'
+     ]
+     
  
 ###
  * Helper function for escaping input strings
@@ -27,6 +33,16 @@ userNames['nono'] = true
 htmlEntities = (str) ->
     return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;')
                       .replace(/>/g, '&gt;').replace(/"/g, '&quot;')
+createRoom = (connection, name) ->
+    rooms.push name
+    listRooms connection
+listRooms = (connection) ->
+    connection.sendUTF(JSON.stringify({ type:'roomList', data: rooms }));
+joinRoom  = (userName, room, index) ->
+    console.log userName + ' should join ' + room
+    clnt = clients[index]
+    clnt.inRoom = room
+    return room
 doUserName = (connection, message) ->
     userName = htmlEntities message
     console.log((new Date()) + ' Checking: ' + userName);
@@ -68,9 +84,13 @@ wsServer.on 'request', (request) ->
     ###
     connection = request.accept(null, request.origin); 
 
+    con =
+        connection: connection
+        room: ''
     # we need to know client index to remove them on 'close' event
-    index = clients.push(connection) - 1;
+    index = clients.push( con ) - 1;
     userName = false;
+    inRoom = false;
  
     console.log((new Date()) + ' Connection accepted.');
  
@@ -83,8 +103,20 @@ wsServer.on 'request', (request) ->
         if messageObj.type isnt 'utf8'
             console.log 'Rejecting funny stuff'
             return # no funny stuff
-        message = JSON.parse messageObj.utf8Data
+        try
+            message = JSON.parse messageObj.utf8Data
+        catch e
+            console.log('This doesn\'t look like a valid JSON: ',messageObj.utf8Data );
         console.log((new Date()) + ' Received Message type: ' + message.type + ' data: ' + message.data);
+        if message.type == 'listRooms'
+            listRooms connection
+            return
+        if userName and message.type == 'join'
+            inRoom = joinRoom userName, message.data, index
+            return
+        if message.type == 'room'
+            createRoom connection, message.data
+            return
         if userName is false
             # remember user name
             userName = doUserName connection, message.data
@@ -94,18 +126,23 @@ wsServer.on 'request', (request) ->
         chat = message.data
         console.log((new Date()) + ' Received Message from ' + userName + ': ' + chat);
         
-        # we want to keep history of all sent messages
         obj = {
             time: (new Date()).getTime(),
             text: htmlEntities(chat),
             author: userName
+            room: inRoom
         };
-        history.push(obj);
-        history = history.slice(-100);
+        # we want to keep history of all sent messages
+        # history.push(obj);
+        # history = history.slice(-100);
 
         # broadcast message to all connected clients (choose correct room in time)
         json = JSON.stringify({ type:'message', data: obj });
-        client.sendUTF json for client in clients;
+        for client in clients
+            do (client) ->
+                console.log (new Date()) + " Im in room " + inRoom + ' client: ' + client.inRoom
+                client.connection.sendUTF json if client.inRoom == inRoom
+        return
     # user disconnected
     connection.on 'close', (connection) ->
         if userName is false 
@@ -113,3 +150,4 @@ wsServer.on 'request', (request) ->
         console.log((new Date()) + " Peer " + connection.remoteAddress + " disconnected.");
         # remove user from the list of connected clients
         clients.splice(index, 1)
+        return
