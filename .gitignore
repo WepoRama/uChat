@@ -7,3 +7,4 @@ test*.html
 *.swo
 node_modules
 nodesWebSocketChatClient
+patch

@@ -5,7 +5,7 @@ mylines = localHistory
 addEventListener('message', (e) -> connection.send(e))
 */
 
-var acceptNick, addLine, connection, refuseNick, setHistory, setNick;
+var acceptNick, addLine, connection, refuseNick, sendJSON, setHistory, setNick;
 
 connection = new WebSocket('ws://127.0.0.1:8088');
 
@@ -21,16 +21,25 @@ connection.onopen = function() {};
 
 connection.onerror = function(error) {};
 
+sendJSON = function(type, data) {
+  var obj;
+  obj = {
+    type: type,
+    data: data
+  };
+  return connection.send(JSON.stringify(obj));
+};
+
 connection.requestHandle = function(handle) {
-  return connection.send(handle);
+  return sendJSON('handle', handle);
 };
 
 connection.requestRoom = function(roomName) {
-  return connection.send(roomName);
+  return sendJSON('room', roomName);
 };
 
 connection.sendMessage = function(message) {
-  return connection.send(message);
+  return sendJSON('message', message);
 };
 
 connection.onmessage = function(message) {

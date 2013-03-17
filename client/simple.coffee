@@ -16,13 +16,17 @@ connection.setChooseNick = (f) ->
 connection.onopen = () ->
 
 connection.onerror = (error) ->
-
+sendJSON = (type, data) ->
+    obj =
+        type: type
+        data: data
+    connection.send JSON.stringify obj
 connection.requestHandle = (handle) ->
-    connection.send(handle)
+    sendJSON 'handle', handle
 connection.requestRoom = (roomName) ->
-    connection.send(roomName)
+    sendJSON 'room', roomName
 connection.sendMessage = (message) ->
-    connection.send(message)
+    sendJSON 'message', message
 
 connection.onmessage = (message) ->
     try 

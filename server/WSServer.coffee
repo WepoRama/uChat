@@ -28,7 +28,8 @@ htmlEntities = (str) ->
     return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;')
                       .replace(/>/g, '&gt;').replace(/"/g, '&quot;')
 doUserName = (connection, message) ->
-    userName = htmlEntities(message.utf8Data);
+    userName = htmlEntities message
+    console.log((new Date()) + ' Checking: ' + userName);
     if userNames[userName]
         connection.sendUTF(JSON.stringify({ type:'refuseNickname', data: userName }));
         console.log((new Date()) + ' User refused (existing): ' + userName);
@@ -78,12 +79,16 @@ wsServer.on 'request', (request) ->
     #if history.length > 0 connection.sendUTF(JSON.stringify( { type: 'history', data: history} ))
  
     # message from user 
-    connection.on 'message', (message) ->
-        if message.type isnt 'utf8'
+    connection.on 'message', (messageObj) ->
+        if messageObj.type isnt 'utf8'
+            console.log 'Rejecting funny stuff'
             return # no funny stuff
+        message = JSON.parse messageObj.utf8Data
+        console.log((new Date()) + ' Received Message type ' + message.type + ': ' + message.data);
         if userName is false
             # remember user name
-            userName = doUserName connection, message
+            userName = doUserName connection, message.data
+            console.log (new Date()) + ' Recognize user: ' + userName 
             return 
         # log and broadcast the message
         console.log((new Date()) + ' Received Message from ' + userName + ': ' + message.utf8Data);

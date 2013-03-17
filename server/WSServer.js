@@ -32,7 +32,8 @@ htmlEntities = function(str) {
 
 doUserName = function(connection, message) {
   var userName;
-  userName = htmlEntities(message.utf8Data);
+  userName = htmlEntities(message);
+  console.log((new Date()) + ' Checking: ' + userName);
   if (userNames[userName]) {
     connection.sendUTF(JSON.stringify({
       type: 'refuseNickname',
@@ -83,13 +84,17 @@ wsServer.on('request', function(request) {
   index = clients.push(connection) - 1;
   userName = false;
   console.log((new Date()) + ' Connection accepted.');
-  connection.on('message', function(message) {
-    var client, json, obj, _i, _len, _results;
-    if (message.type !== 'utf8') {
+  connection.on('message', function(messageObj) {
+    var client, json, message, obj, _i, _len, _results;
+    if (messageObj.type !== 'utf8') {
+      console.log('Rejecting funny stuff');
       return;
     }
+    message = JSON.parse(messageObj.utf8Data);
+    console.log((new Date()) + ' Received Message type ' + message.type + ': ' + message.data);
     if (userName === false) {
-      userName = doUserName(connection, message);
+      userName = doUserName(connection, message.data);
+      console.log((new Date()) + ' Recognize user: ' + userName);
       return;
     }
     console.log((new Date()) + ' Received Message from ' + userName + ': ' + message.utf8Data);
