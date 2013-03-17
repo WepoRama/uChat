@@ -17,6 +17,9 @@ history = [ ];
 
 # list of currently connected clients (users)
 clients = [ ];
+
+userNames = { };
+userNames['nono'] = true
  
 ###
  * Helper function for escaping input strings
@@ -71,7 +74,11 @@ wsServer.on 'request', (request) ->
         if userName is false
             # remember user name
             userName = htmlEntities(message.utf8Data);
-            # TODO: check for existing users:
+            if userNames[userName]
+                connection.sendUTF(JSON.stringify({ type:'refuseNickname', data: userName }));
+                console.log((new Date()) + ' User refused (existing): ' + userName);
+                return
+            userNames[userName] = true
             connection.sendUTF(JSON.stringify({ type:'acceptNickname', data: userName }));
             console.log((new Date()) + ' User is known as: ' + userName);
             return 

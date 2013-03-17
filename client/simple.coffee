@@ -10,6 +10,8 @@ connection = new WebSocket('ws://127.0.0.1:8088')
 
 connection.setAddHistoryLine = (f) ->
     connection.addHistory = f
+connection.setChooseNick = (f) ->
+    connection.chooseNick = f
 
 connection.onopen = () ->
 
@@ -39,9 +41,14 @@ addLine = (line) ->
     #lines = [] if lines is undefined
     #localHistory.push line
     connection.addHistory line 
+setNick = (nick) ->
+    window.localStorage.setItem 'nick', nick
+    connection.chooseNick nick
 acceptNick = (nick) ->    
     console.log 'accept ', nick
     #sessionStorage.nickName = nick
-    window.localStorage.setItem 'nick', nick
+    setNick nick
 refuseNick = (nick) ->    
     console.log 'refuse ', nick
+    nonick = '('+nick+')'
+    setNick nonick

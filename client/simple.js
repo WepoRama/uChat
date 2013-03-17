@@ -5,12 +5,16 @@ mylines = localHistory
 addEventListener('message', (e) -> connection.send(e))
 */
 
-var acceptNick, addLine, connection, refuseNick, setHistory;
+var acceptNick, addLine, connection, refuseNick, setHistory, setNick;
 
 connection = new WebSocket('ws://127.0.0.1:8088');
 
 connection.setAddHistoryLine = function(f) {
   return connection.addHistory = f;
+};
+
+connection.setChooseNick = function(f) {
+  return connection.chooseNick = f;
 };
 
 connection.onopen = function() {};
@@ -58,11 +62,19 @@ addLine = function(line) {
   return connection.addHistory(line);
 };
 
+setNick = function(nick) {
+  window.localStorage.setItem('nick', nick);
+  return connection.chooseNick(nick);
+};
+
 acceptNick = function(nick) {
   console.log('accept ', nick);
-  return window.localStorage.setItem('nick', nick);
+  return setNick(nick);
 };
 
 refuseNick = function(nick) {
-  return console.log('refuse ', nick);
+  var nonick;
+  console.log('refuse ', nick);
+  nonick = '(' + nick + ')';
+  return setNick(nonick);
 };

@@ -1,9 +1,11 @@
 
 uChat.controller 'loginController',
     ($scope, $location, $routeParams,chatModel) -> 
+        connection.setChooseNick (l) ->
+            $scope.$apply () -> $scope.nick = l
+        $scope.nick = chatModel.getNickName()
         $scope.chooseHandle = () ->
-            #connection.setAddHistoryLine (l) -> chatModel.addLine l
-            connection.requestHandle($scope.login.handle)
+            connection.requestHandle($scope.nick)
             #$location.path('/chatsAvailable/');
             $location.path('/chat/');
         $scope.createRoom = () ->
