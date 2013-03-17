@@ -4,6 +4,7 @@ uChat.controller 'loginController',
         connection.setChooseNick (l) ->
             $scope.$apply () -> $scope.nick = l
         $scope.nick = chatModel.getNickName()
+
         $scope.chooseHandle = () ->
             connection.requestHandle($scope.nick)
             #$location.path('/chatsAvailable/');
