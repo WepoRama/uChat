@@ -13,4 +13,4 @@ TODO:
  * .css
  * show users
  * kicking users in room
- * bit of strangeness if nick has not been validated.
+ * nonicks can not listen in on rooms

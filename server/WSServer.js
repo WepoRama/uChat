@@ -134,7 +134,7 @@ wsServer.on('request', function(request) {
       createRoom(connection, message.data);
       return;
     }
-    if (userName === false) {
+    if (message.type === 'handle') {
       userName = doUserName(connection, message.data);
       console.log((new Date()) + ' Recognize user: ' + userName);
       return;
@@ -147,19 +147,27 @@ wsServer.on('request', function(request) {
       author: userName,
       room: inRoom
     };
+    if (!userName) {
+      obj.text = "Please choose a valid nick to be able to chat";
+      connection.sendUTF(JSON.stringify({
+        type: 'message',
+        data: obj
+      }));
+      return;
+    }
     json = JSON.stringify({
       type: 'message',
       data: obj
     });
-    _fn = function(client) {
-      console.log((new Date()) + " Im in room " + inRoom + ' client: ' + client.inRoom);
+    _fn = function(client, inRoom) {
+      console.log((new Date()) + " Im in room '" + inRoom + "' client is in: " + client.inRoom);
       if (client.inRoom === inRoom) {
         return client.connection.sendUTF(json);
       }
     };
     for (_i = 0, _len = clients.length; _i < _len; _i++) {
       client = clients[_i];
-      _fn(client);
+      _fn(client, inRoom);
     }
   });
   return connection.on('close', function(connection) {

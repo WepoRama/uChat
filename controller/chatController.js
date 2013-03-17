@@ -5,6 +5,7 @@ uChat.controller('chatController', function($scope, $location, $routeParams, cha
   $scope.nick = chatModel.getNickName();
   $scope.history = chatModel.getHistory();
   room = $routeParams.room;
+  $scope.room = room;
   connection.joinRoom(room);
   connection.setAddHistoryLine(function(l) {
     return $scope.$apply(function() {
@@ -14,6 +15,6 @@ uChat.controller('chatController', function($scope, $location, $routeParams, cha
   return $scope.sendMessage = function() {
     connection.sendMessage($scope.chat.message);
     $scope.chat.message = '';
-    return $location.path('/chat/');
+    return $location.path('/chat/' + room);
   };
 });

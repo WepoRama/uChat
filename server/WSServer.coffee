@@ -117,7 +117,7 @@ wsServer.on 'request', (request) ->
         if message.type == 'room'
             createRoom connection, message.data
             return
-        if userName is false
+        if message.type == 'handle'
             # remember user name
             userName = doUserName connection, message.data
             console.log (new Date()) + ' Recognize user: ' + userName 
@@ -132,6 +132,13 @@ wsServer.on 'request', (request) ->
             author: userName
             room: inRoom
         };
+
+        if not userName
+            obj.text = "Please choose a valid nick to be able to chat"
+            obj.userName = '(system says)'
+            connection.sendUTF JSON.stringify({ type:'message', data: obj });
+            return
+
         # we want to keep history of all sent messages
         # history.push(obj);
         # history = history.slice(-100);
@@ -139,8 +146,8 @@ wsServer.on 'request', (request) ->
         # broadcast message to all connected clients (choose correct room in time)
         json = JSON.stringify({ type:'message', data: obj });
         for client in clients
-            do (client) ->
-                console.log (new Date()) + " Im in room " + inRoom + ' client: ' + client.inRoom
+            do (client,inRoom) ->
+                console.log (new Date()) + " Im in room '" + inRoom + "' client is in: " + client.inRoom
                 client.connection.sendUTF json if client.inRoom == inRoom
         return
     # user disconnected
