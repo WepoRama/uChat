@@ -27,6 +27,16 @@ userNames['nono'] = true
 htmlEntities = (str) ->
     return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;')
                       .replace(/>/g, '&gt;').replace(/"/g, '&quot;')
+doUserName = (connection, message) ->
+    userName = htmlEntities(message.utf8Data);
+    if userNames[userName]
+        connection.sendUTF(JSON.stringify({ type:'refuseNickname', data: userName }));
+        console.log((new Date()) + ' User refused (existing): ' + userName);
+        return false
+    userNames[userName] = true
+    connection.sendUTF(JSON.stringify({ type:'acceptNickname', data: userName }));
+    console.log((new Date()) + ' User is known as: ' + userName);
+    return userName
  
 ###
  * HTTP server
@@ -73,14 +83,7 @@ wsServer.on 'request', (request) ->
             return # no funny stuff
         if userName is false
             # remember user name
-            userName = htmlEntities(message.utf8Data);
-            if userNames[userName]
-                connection.sendUTF(JSON.stringify({ type:'refuseNickname', data: userName }));
-                console.log((new Date()) + ' User refused (existing): ' + userName);
-                return
-            userNames[userName] = true
-            connection.sendUTF(JSON.stringify({ type:'acceptNickname', data: userName }));
-            console.log((new Date()) + ' User is known as: ' + userName);
+            userName = doUserName connection, message
             return 
         # log and broadcast the message
         console.log((new Date()) + ' Received Message from ' + userName + ': ' + message.utf8Data);
