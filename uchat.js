@@ -13,6 +13,9 @@ uChatConfig = function($routeProvider) {
   }).when('/chat/:room', {
     controller: 'chatController',
     templateUrl: 'view/chat.html'
+  }).when('/chat/kick/:room/:nick', {
+    controller: 'kickController',
+    templateUrl: 'view/chat.html'
   });
   return 1;
 };

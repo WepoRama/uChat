@@ -5,9 +5,13 @@ mylines = localHistory
 addEventListener('message', (e) -> connection.send(e))
 */
 
-var acceptNick, addLine, connection, refuseNick, roomList, sendJSON, setHistory, setNick;
+var acceptNick, addLine, connection, refuseNick, roomList, sendJSON, setHistory, setNick, viewers;
 
 connection = new WebSocket('ws://127.0.0.1:8088');
+
+connection.setSetUsers = function(u) {
+  return connection.setUsers = u;
+};
 
 connection.setAddHistoryLine = function(f) {
   return connection.addHistory = f;
@@ -75,8 +79,15 @@ connection.onmessage = function(message) {
     refuseNick(json.data);
   }
   if (json.type === 'roomList') {
-    return roomList(json.data);
+    roomList(json.data);
   }
+  if (json.type === 'viewers') {
+    return viewers(json.data);
+  }
+};
+
+viewers = function(data) {
+  return connection.setUsers(data);
 };
 
 setHistory = function(history) {};

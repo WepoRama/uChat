@@ -1,5 +1,6 @@
 <ul>
-    <li ng-repeat='room in rooms'> <a href='#/chat/{{room}}'>{{room}}</a>
+    <li ng-repeat='room in rooms'> <a href='#/chat/{{room.name}}'>{{room.name}}</a>
+        owner: {{room.owner}}
 </ul>
 <form name='newChat'>
     <p>Your nick is: {{nick}}</p>

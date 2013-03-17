@@ -8,6 +8,8 @@ addEventListener('message', (e) -> connection.send(e))
 
 connection = new WebSocket('ws://127.0.0.1:8088')
 
+connection.setSetUsers = (u) ->
+    connection.setUsers = u
 connection.setAddHistoryLine = (f) ->
     connection.addHistory = f
 connection.setChooseNick = (f) ->
@@ -44,14 +46,14 @@ connection.onmessage = (message) ->
     acceptNick json.data if json.type == 'acceptNickname'
     refuseNick json.data if json.type == 'refuseNickname'
     roomList   json.data if json.type == 'roomList'
+    viewers    json.data if json.type == 'viewers'
     
+viewers = (data) ->    
+    connection.setUsers data
 setHistory = (history) ->    
     #console.log line for line in history
 addLine = (line) ->    
     console.log line
-    #lines = localStorage.history
-    #lines = [] if lines is undefined
-    #localHistory.push line
     connection.addHistory line 
 setNick = (nick) ->
     window.localStorage.setItem 'nick', nick

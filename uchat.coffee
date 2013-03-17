@@ -14,6 +14,10 @@ uChatConfig = ($routeProvider) ->
             controller: 'chatController',
             templateUrl: 'view/chat.html'
         })
+        .when('/chat/kick/:room/:nick', {
+            controller: 'kickController',
+            templateUrl: 'view/chat.html'
+        })
     1
         
 uChat = angular.module('uChat', []).

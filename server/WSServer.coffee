@@ -22,26 +22,43 @@ userNames = { };
 userNames['nono'] = true
 
 rooms = [
-     'lounge'
-     'entrance'
-     ]
+        {
+            name: 'lounge'
+            owner: 'system'
+        }, {
+            name: 'entrance'
+            owner: 'system'
+        }
+    ]
      
  
 ###
- * Helper function for escaping input strings
+#  Helper function for escaping input strings
 ###
 htmlEntities = (str) ->
     return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;')
                       .replace(/>/g, '&gt;').replace(/"/g, '&quot;')
-createRoom = (connection, name) ->
-    rooms.push name
+createRoom = (connection, name, userName) ->
+    rooms.push 
+        name: name
+        owner: userName
     listRooms connection
 listRooms = (connection) ->
     connection.sendUTF(JSON.stringify({ type:'roomList', data: rooms }));
 joinRoom  = (userName, room, index) ->
-    console.log userName or 'listener' + ' should join ' + room
+    console.log ((userName or 'listener') + ' should join ' + room + ', index: ' + index )
     clnt = clients[index]
-    clnt.inRoom = room
+    return unless clnt
+    clnt.room = room
+    clnt.userName = userName
+    clientell = []
+    for client in clients
+        console.log userName + ' in  ' + room + ' and ' + client.room
+        clientell.push client.userName if client.room == room
+    json = JSON.stringify 
+        type:'viewers'
+        data: clientell
+    broadcastInfo json, room
     return room
 doUserName = (connection, message) ->
     userName = htmlEntities message
@@ -54,6 +71,11 @@ doUserName = (connection, message) ->
     connection.sendUTF(JSON.stringify({ type:'acceptNickname', data: userName }));
     console.log((new Date()) + ' User is known as: ' + userName);
     return userName
+
+broadcastInfo = (json, inRoom) ->
+    for client in clients
+        do (client,inRoom) ->
+            client.connection.sendUTF json if client.room == inRoom
  
 ###
  * HTTP server
@@ -87,6 +109,7 @@ wsServer.on 'request', (request) ->
     con =
         connection: connection
         room: ''
+        userName: false
     # we need to know client index to remove them on 'close' event
     index = clients.push( con ) - 1;
     userName = false;
@@ -107,7 +130,8 @@ wsServer.on 'request', (request) ->
             message = JSON.parse messageObj.utf8Data
         catch e
             console.log('This doesn\'t look like a valid JSON: ',messageObj.utf8Data );
-        console.log((new Date()) + ' Received Message type: ' + message.type + ' data: ' + message.data);
+        console.log((new Date()) + ' Received Message type: ' + message.type +
+            ' data: ' + message.data);
 
         if message.type == 'listRooms'
             listRooms connection
@@ -116,7 +140,7 @@ wsServer.on 'request', (request) ->
             inRoom = joinRoom userName, message.data, index
             return
         if message.type == 'room'
-            createRoom connection, message.data
+            createRoom connection, message.data, userName
             return
         if message.type == 'handle'
             # remember user name
@@ -146,11 +170,8 @@ wsServer.on 'request', (request) ->
 
         # broadcast message to all connected clients, choose correct room
         json = JSON.stringify({ type:'message', data: obj });
-        for client in clients
-            do (client,inRoom) ->
-                console.log (new Date()) + " Im in room '" + inRoom + "' client is in: " + client.inRoom
-                console.log ("Sending" + obj.text)
-                client.connection.sendUTF json if client.inRoom == inRoom
+        broadcastInfo json, inRoom
+
         return
     # user disconnected
     connection.on 'close', (connection) ->

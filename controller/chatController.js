@@ -2,9 +2,10 @@
 
 uChat.controller('chatController', function($scope, $location, $routeParams, chatModel) {
   var room;
+  room = $routeParams.room;
   $scope.nick = chatModel.getNickName();
   $scope.history = chatModel.getHistory();
-  room = $routeParams.room;
+  $scope.userAction = 'kick';
   $scope.room = room;
   connection.joinRoom(room);
   connection.setAddHistoryLine(function(l) {
@@ -12,9 +13,21 @@ uChat.controller('chatController', function($scope, $location, $routeParams, cha
       return $scope.history = chatModel.addLine(l);
     });
   });
+  connection.setSetUsers(function(u) {
+    return $scope.$apply(function() {
+      return $scope.users = u;
+    });
+  });
   return $scope.sendMessage = function() {
     connection.sendMessage($scope.chat.message);
     $scope.chat.message = '';
     return $location.path('/chat/' + room);
   };
+});
+
+uChat.controller('kickController', function($scope, $location, $routeParams, chatModel) {
+  var nick, room;
+  room = $routeParams.room;
+  nick = $routeParams.nick;
+  return $location.path('/chat/' + room);
 });

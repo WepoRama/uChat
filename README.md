@@ -11,5 +11,7 @@ Under no circumstances edit the .js files, they are 'compiled' from the coffee s
 TODO:
 
  * .css
- * show users
- * kicking users in room
+ * kick link should actually do somthing
+ *  * work only for owner
+ *  * but not on owners
+ *  * actually remove from room
