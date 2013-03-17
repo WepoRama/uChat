@@ -85,22 +85,23 @@ wsServer.on('request', function(request) {
   userName = false;
   console.log((new Date()) + ' Connection accepted.');
   connection.on('message', function(messageObj) {
-    var client, json, message, obj, _i, _len, _results;
+    var chat, client, json, message, obj, _i, _len, _results;
     if (messageObj.type !== 'utf8') {
       console.log('Rejecting funny stuff');
       return;
     }
     message = JSON.parse(messageObj.utf8Data);
-    console.log((new Date()) + ' Received Message type ' + message.type + ': ' + message.data);
+    console.log((new Date()) + ' Received Message type: ' + message.type + ' data: ' + message.data);
     if (userName === false) {
       userName = doUserName(connection, message.data);
       console.log((new Date()) + ' Recognize user: ' + userName);
       return;
     }
-    console.log((new Date()) + ' Received Message from ' + userName + ': ' + message.utf8Data);
+    chat = message.data;
+    console.log((new Date()) + ' Received Message from ' + userName + ': ' + chat);
     obj = {
       time: (new Date()).getTime(),
-      text: htmlEntities(message.utf8Data),
+      text: htmlEntities(chat),
       author: userName
     };
     history.push(obj);

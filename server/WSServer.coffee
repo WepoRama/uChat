@@ -84,19 +84,20 @@ wsServer.on 'request', (request) ->
             console.log 'Rejecting funny stuff'
             return # no funny stuff
         message = JSON.parse messageObj.utf8Data
-        console.log((new Date()) + ' Received Message type ' + message.type + ': ' + message.data);
+        console.log((new Date()) + ' Received Message type: ' + message.type + ' data: ' + message.data);
         if userName is false
             # remember user name
             userName = doUserName connection, message.data
             console.log (new Date()) + ' Recognize user: ' + userName 
             return 
         # log and broadcast the message
-        console.log((new Date()) + ' Received Message from ' + userName + ': ' + message.utf8Data);
+        chat = message.data
+        console.log((new Date()) + ' Received Message from ' + userName + ': ' + chat);
         
         # we want to keep history of all sent messages
         obj = {
             time: (new Date()).getTime(),
-            text: htmlEntities(message.utf8Data),
+            text: htmlEntities(chat),
             author: userName
         };
         history.push(obj);
