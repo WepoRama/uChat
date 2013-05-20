@@ -8,3 +8,6 @@ test*.html
 node_modules
 nodesWebSocketChatClient
 patch
+.dotcloud/
+dotcloud.yml
+package.json

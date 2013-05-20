@@ -1,6 +1,6 @@
 
 uChat.controller 'loginController',
-    ($scope, $location, $routeParams,chatModel) -> 
+    ($scope, $location, $routeParams,chatModel) ->
         connection.setChooseNick (l) ->
             $scope.$apply () -> $scope.nick = l
         connection.setGetRooms (r) ->
@@ -11,10 +11,10 @@ uChat.controller 'loginController',
 
         $scope.chooseHandle = () ->
             connection.requestHandle($scope.nick)
-            $location.path('/chatsAvailable/');
+            $location.path('/chatsAvailable/')
             #$location.path('/chat/');
         $scope.createRoom = () ->
             connection.requestRoom($scope.login.roomName)
             connection.requestRoomList()
-            $location.path('/chatsAvailable/');
+            $location.path('/chatsAvailable/')
         1

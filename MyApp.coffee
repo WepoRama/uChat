@@ -1,5 +1,6 @@
+#never mind me
 window.myController = ($scope) ->
-    $scope.title = "MyTitle";
+    $scope.title = "MyTitle"
     $scope.todo = [
         {job: "Stuffing"
         done: false
@@ -10,7 +11,7 @@ window.myController = ($scope) ->
         done: false
         }
     ]
-    $scope.two = () -> 
+    $scope.two = () ->
         [{job: "more"
         done: true
         },{job: "Learn Angular"

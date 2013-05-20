@@ -1,5 +1,7 @@
 window.localStorage.setItem 'history', JSON.stringify([])
 
+# Controll the flow of url paths to coffescript code and views
+
 uChatConfig = ($routeProvider) ->
     $routeProvider
         .when('', {
@@ -25,6 +27,6 @@ uChatConfig = ($routeProvider) ->
     1
         
 uChat = angular.module('uChat', []).
-    config( uChatConfig );
+    config( uChatConfig )
 
 1
